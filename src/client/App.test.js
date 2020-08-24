@@ -41,4 +41,28 @@ describe('App component', () => {
     expect(dietaryTotals[1].innerHTML.includes('1')).toBe(true);
     expect(dietaryTotals[1].innerHTML.includes('df')).toBe(true);
   });
+
+  it('when item is picked, adds it to the menu preview', async () => {
+    render(<App />);
+
+    await waitFor(() => screen.getByText('Pizza'));
+
+    screen.getByText('Pizza').click();
+    const menuPreview = screen.getByTestId('menu-preview');
+
+    expect(menuPreview.innerHTML.includes('Pizza')).toBe(true);
+  });
+
+  it('when item is removed, removes it from the menu preview', async () => {
+    render(<App />);
+
+    await waitFor(() => screen.getByText('Pizza'));
+
+    screen.getByText('Pizza').click();
+    const menuPreview = screen.getByTestId('menu-preview');
+
+    menuPreview.querySelector('.remove-item').click();
+
+    expect(menuPreview.innerHTML.includes('Pizza')).toBe(false);
+  });
 });

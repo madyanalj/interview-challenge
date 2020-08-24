@@ -49,7 +49,7 @@ export default () => {
           <div className="col-4">
             <ItemPicker items={availableItems} onItemPick={pickItem} />
           </div>
-          <div className="col-8">
+          <div className="col-8" data-testid="menu-preview">
             <MenuPreview items={menuItems} onItemRemove={unpickItem} />
           </div>
         </div>
