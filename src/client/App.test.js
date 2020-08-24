@@ -1,19 +1,27 @@
 import React from 'react'
-import { render, screen } from '@testing-library/react'
-import { act } from 'react-dom/test-utils';
+import { render, screen, waitFor } from '@testing-library/react'
 import App from './App'
-import { fetchItems } from './services/item';
 
 jest.mock('./services/item', () => ({
-  fetchItems: () => Promise.resolve([]),
+  fetchItems: () => {
+    const items = [
+      { id: 5, name: 'Pizza', dietaries: [] },
+      { id: 7, name: 'Burger', dietaries: [] },
+      { id: 9, name: 'Pasta', dietaries: [] },
+    ];
+    return Promise.resolve(items);
+  },
 }));
 
 describe('App component', () => {
-  it('renders a message', async () => {
-    await act(async () => {
-      render(<App />);
-    });
+  it('renders total number of selected items', async () => {
+    render(<App />);
 
-    expect(screen.getByText('6 items')).toBeInTheDocument();
+    await waitFor(() => screen.getByText('Pizza'));
+
+    screen.getByText('Pizza').click();
+    screen.getByText('Burger').click();
+
+    expect(screen.getByText('2 items')).toBeInTheDocument();
   });
 });
