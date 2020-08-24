@@ -4,6 +4,7 @@ import { fetchItems } from './services/item';
 import { ItemPicker } from './components/sections/ItemPicker';
 import { MenuPreview } from './components/sections/MenuPreview';
 import { Dietary } from './components/shared/Dietary';
+import { countEachElement } from './utils';
 
 export default () => {
   const [availableItems, setAvailableItems] = useState([]);
@@ -13,12 +14,13 @@ export default () => {
     fetchItems().then(setAvailableItems);
   }, []);
 
+  const dietaryTotals = countEachElement(menuItems.flatMap((item) => item.dietaries));
+
   const pickItem = (item) => {
     if (!menuItems.includes(item)) {
       setMenuItems([...menuItems, item]);
     }
   }
-
   const unpickItem = (item) => {
     const newMenuItems = menuItems.filter((menuItem) => menuItem !== item);
     setMenuItems(newMenuItems);
@@ -33,9 +35,11 @@ export default () => {
               <span>{menuItems.length} items</span>
             </div>
             <div className="col-6 menu-summary-right">
-              6x <Dietary abbreviation="ve" />
-              4x <Dietary abbreviation="v" />
-              12x <Dietary abbreviation="n!" />
+              {dietaryTotals.map(([dietary, total]) =>
+                <span key={dietary} data-testid="dietary-total">
+                  {total}x <Dietary abbreviation={dietary} />
+                </span>
+              )}
             </div>
           </div>
         </div>
