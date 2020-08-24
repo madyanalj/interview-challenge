@@ -19,6 +19,11 @@ export default () => {
     }
   }
 
+  const unpickItem = (item) => {
+    const newMenuItems = menuItems.filter((menuItem) => menuItem !== item);
+    setMenuItems(newMenuItems);
+  }
+
   return (
     <div className="wrapper">
       <div className="menu-summary">
@@ -41,7 +46,7 @@ export default () => {
             <ItemPicker items={availableItems} onItemPick={pickItem} />
           </div>
           <div className="col-8">
-            <MenuPreview items={menuItems} />
+            <MenuPreview items={menuItems} onItemRemove={unpickItem} />
           </div>
         </div>
       </div>
