@@ -38,9 +38,6 @@ export default () => {
       <div className="container menu-builder">
         <div className="row">
           <div className="col-4">
-            <div className="filters">
-              <input className="form-control" placeholder="Name" />
-            </div>
             <ItemPicker items={availableItems} onItemPick={pickItem} />
           </div>
           <div className="col-8">
