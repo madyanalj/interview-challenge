@@ -19,4 +19,14 @@ describe('Item component', () => {
     expect(screen.getByText('v')).toBeInTheDocument();
     expect(screen.getByText('n!')).toBeInTheDocument();
   });
+
+  it('when item clicked, call passed "onClick" function', () => {
+    const onClick = jest.fn();
+    const item = { id: 5, name: 'Pizza', dietaries: [] };
+    render(<Item item={item} onClick={onClick} />);
+
+    screen.getByText('Pizza').click();
+
+    expect(onClick).toHaveBeenCalled();
+  });
 });

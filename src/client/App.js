@@ -2,12 +2,22 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import { fetchItems } from './services/item';
 import { ItemPicker } from './components/sections/ItemPicker';
+import { MenuPreview } from './components/sections/MenuPreview';
+import { Dietary } from './components/shared/Dietary';
 
 export default () => {
-  const [items, setItems] = useState([]);
+  const [availableItems, setAvailableItems] = useState([]);
+  const [menuItems, setMenuItems] = useState([]);
+
   useEffect(() => {
-    fetchItems().then(setItems);
+    fetchItems().then(setAvailableItems);
   }, []);
+
+  const pickItem = (item) => {
+    if (!menuItems.includes(item)) {
+      setMenuItems([...menuItems, item]);
+    }
+  }
 
   return (
     <div className="wrapper">
@@ -18,9 +28,9 @@ export default () => {
               <span>6 items</span>
             </div>
             <div className="col-6 menu-summary-right">
-              6x <span className="dietary">ve</span>
-              4x <span className="dietary">v</span>
-              12x <span className="dietary">n!</span>
+              6x <Dietary abbreviation="ve" />
+              4x <Dietary abbreviation="v" />
+              12x <Dietary abbreviation="n!" />
             </div>
           </div>
         </div>
@@ -31,48 +41,10 @@ export default () => {
             <div className="filters">
               <input className="form-control" placeholder="Name" />
             </div>
-            <ItemPicker items={items} />
+            <ItemPicker items={availableItems} onItemPick={pickItem} />
           </div>
           <div className="col-8">
-            <h2>Menu preview</h2>
-            <ul className="menu-preview">
-              <li className="item">
-                <h2>Dummy item</h2>
-                <p>
-                  <span className="dietary">ve</span>
-                  <span className="dietary">v</span>
-                  <span className="dietary">n!</span>
-                </p>
-                <button className="remove-item">x</button>
-              </li>
-              <li className="item">
-                <h2>Dummy item</h2>
-                <p>
-                  <span className="dietary">ve</span>
-                  <span className="dietary">v</span>
-                  <span className="dietary">n!</span>
-                </p>
-                <button className="remove-item">x</button>
-              </li>
-              <li className="item">
-                <h2>Dummy item</h2>
-                <p>
-                  <span className="dietary">ve</span>
-                  <span className="dietary">v</span>
-                  <span className="dietary">n!</span>
-                </p>
-                <button className="remove-item">x</button>
-              </li>
-              <li className="item">
-                <h2>Dummy item</h2>
-                <p>
-                  <span className="dietary">ve</span>
-                  <span className="dietary">v</span>
-                  <span className="dietary">n!</span>
-                </p>
-                <button className="remove-item">x</button>
-              </li>
-            </ul>
+            <MenuPreview items={menuItems} />
           </div>
         </div>
       </div>
